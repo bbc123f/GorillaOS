@@ -27,6 +27,7 @@ namespace GorillaOS
         private float refresh;
         public static List<BaseUnityPlugin> Moduals = new List<BaseUnityPlugin>();
         public static string list;
+        public static GorillaScoreBoard[] boards;
 
         private void Awake()
         {
@@ -45,11 +46,18 @@ namespace GorillaOS
 
         public void UpadateTheme(int theme)
         {
+            if (boards == null)
+            {
+                boards = FindObjectsOfType<GorillaScoreBoard>();
+            }
             GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom/TreeRoomInteractables/StaticUnlit/motdscreen").GetComponent<MeshRenderer>().enabled = true;
             GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom/TreeRoomInteractables/StaticUnlit/screen").GetComponent<MeshRenderer>().enabled = true;
             GorillaComputer.instance.computerScreenRenderer.enabled = true;
             GorillaComputer.instance.wallScreenRenderer.enabled = true;
-            GorillaComputer.instance.scoreboardRenderer.enabled = true;
+            foreach (GorillaScoreBoard board in boards)
+            {
+                board.enabled = true;
+            }
             for (int i = 0; i < GorillaComputer.instance.levelScreens.Length; i++)
             {
                 GorillaComputer.instance.levelScreens[i].GetComponent<MeshRenderer>().enabled = true;
@@ -70,7 +78,10 @@ namespace GorillaOS
                     GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom/TreeRoomInteractables/StaticUnlit/screen").GetComponent<MeshRenderer>().enabled = false;
                     GorillaComputer.instance.computerScreenRenderer.enabled = false;
                     GorillaComputer.instance.wallScreenRenderer.enabled = false;
-                    GorillaComputer.instance.scoreboardRenderer.enabled = false;
+                    foreach (GorillaScoreBoard board in boards)
+                    {
+                        board.enabled = false;
+                    }
                     for (int i = 0; i < GorillaComputer.instance.levelScreens.Length; i++)
                     {
                         GorillaComputer.instance.levelScreens[i].GetComponent<MeshRenderer>().enabled = false;
@@ -86,7 +97,10 @@ namespace GorillaOS
             GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom/TreeRoomInteractables/StaticUnlit/screen").GetComponent<MeshRenderer>().material = mat;
             GorillaComputer.instance.computerScreenRenderer.material=mat;
             GorillaComputer.instance.wallScreenRenderer.material = mat;
-            GorillaComputer.instance.scoreboardRenderer.material = mat;
+            foreach (GorillaScoreBoard board in boards)
+            {
+                board.GetComponent<Renderer>().material = mat;
+            }
             for (int i = 0; i < GorillaComputer.instance.levelScreens.Length; i++)
             {
                 GorillaComputer.instance.levelScreens[i].badMaterial = mat;
